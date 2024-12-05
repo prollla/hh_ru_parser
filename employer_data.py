@@ -1,6 +1,7 @@
 from collections import defaultdict
 from utils import fetch_json
 
+
 class EmployerData:
     def __init__(self, queries, area=26):
         self.queries = queries

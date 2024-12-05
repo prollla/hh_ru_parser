@@ -1,0 +1,5 @@
+{
+    "queries": ["ASP.NET", "Vue", "React"],
+    "area": 26,
+    "output_file": "employer_data_with_links.xlsx"
+}

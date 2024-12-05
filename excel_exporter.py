@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 class ExcelExporter:
     def __init__(self, output_file="employer_data_with_links.xlsx"):
         self.output_file = output_file
