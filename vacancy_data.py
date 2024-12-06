@@ -7,7 +7,6 @@ class VacancyData:
         self.all_vacancies = []
 
     def collect_all_vacancies(self):
-        """Собирает все вакансии для работодателей из списка."""
         for (employer_id, employer_name) in self.employer_scores.keys():
             vacancies = self._fetch_all_vacancies(employer_id)
             for vacancy in vacancies:
@@ -19,7 +18,6 @@ class VacancyData:
                 })
 
     def _fetch_all_vacancies(self, employer_id):
-        """Получает все вакансии для работодателя."""
         url = "https://api.hh.ru/vacancies"
         params = {"employer_id": employer_id, "per_page": 100}
         vacancies = []
@@ -37,5 +35,4 @@ class VacancyData:
         return vacancies
 
     def get_all_vacancies(self):
-        """Возвращает собранные данные о вакансиях."""
         return self.all_vacancies

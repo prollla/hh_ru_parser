@@ -2,26 +2,22 @@ import pandas as pd
 
 
 class ExcelExporter:
-    def __init__(self, output_file="employer_data_with_links.xlsx"):
-        self.output_file = output_file
-
-    def export(self, employer_scores, all_vacancies, queries):
-        """Экспортирует данные в Excel."""
-        # Первая таблица: Баллы
-        scores_data = []
+    def export(self, employer_scores, employer_vacancy_links, queries, filename="employer_data_with_links.xlsx"):
+        columns = ["Имя работадателя", "Ссылка на него"] + \
+                  [f"{query} Кол-во вакансий" for query in queries] + \
+                  [f"{query} ССЫЛКА НА ВАКАНСИИ" for query in queries] + \
+                  ["TOTAL"]
+        data = []
         for (employer_id, employer_name), scores in employer_scores.items():
-            total_score = sum(scores)
-            scores_data.append([employer_name, f"https://hh.ru/employer/{employer_id}"] + scores + [total_score])
-
-        scores_columns = ["Работодатель", "Ссылка на работодателя"] + queries + ["Total"]
-        df_scores = pd.DataFrame(scores_data, columns=scores_columns)
-
-        # Вторая таблица: Вакансии
-        df_vacancies = pd.DataFrame(all_vacancies)
-
-        # Сохранение в Excel
-        with pd.ExcelWriter(self.output_file) as writer:
-            df_scores.to_excel(writer, sheet_name="Баллы", index=False)
-            df_vacancies.to_excel(writer, sheet_name="Все вакансии", index=False)
-
-        print(f"Результаты сохранены в файл: {self.output_file}")
+            row = [employer_name, f"https://hh.ru/employer/{employer_id}"]
+            total_score = 0
+            for query_index, score in enumerate(scores):
+                row.append(score)
+                vacancy_links = ", ".join(employer_vacancy_links[(employer_id, employer_name)][query_index])
+                row.append(vacancy_links)
+                total_score += score
+            row.append(total_score)
+            data.append(row)
+        df = pd.DataFrame(data, columns=columns)
+        with pd.ExcelWriter(filename) as writer:
+            df.to_excel(writer, sheet_name="Вакансии", index=False)
