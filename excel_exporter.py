@@ -3,10 +3,11 @@ import pandas as pd
 
 class ExcelExporter:
     def export(self, employer_scores, employer_vacancy_links, queries, filename="employer_data_with_links.xlsx"):
-        columns = ["Имя работадателя", "Ссылка на него"] + \
-                  [f"{query} Кол-во вакансий" for query in queries] + \
-                  [f"{query} ССЫЛКА НА ВАКАНСИИ" for query in queries] + \
-                  ["TOTAL"]
+        columns = ["Имя работадателя", "Ссылка на него"]
+        for query in queries:
+            columns.append(f"{query}")
+            columns.append(f"{query} Ссылка на вакансию")
+        columns.append("TOTAL")
         data = []
         for (employer_id, employer_name), scores in employer_scores.items():
             row = [employer_name, f"https://hh.ru/employer/{employer_id}"]
