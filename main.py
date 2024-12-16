@@ -11,13 +11,13 @@ def load_config(config_file="input.json"):
 def main():
     config = load_config()
     queries = config["queries"]
-    area = config["area"]
+    areas = config["area"]
     output_file = config["output_file"]
-    employer_data = EmployerData(queries, area)
+    employer_data = EmployerData(queries, areas)
     employer_data.collect_employers()
     employer_scores, employer_vacancy_links = employer_data.get_scores()
     exporter = ExcelExporter()
-    exporter.export(employer_scores, employer_vacancy_links, queries, output_file)
+    exporter.export(employer_scores, employer_vacancy_links, queries, areas, output_file)
 
 
 if __name__ == "__main__":
